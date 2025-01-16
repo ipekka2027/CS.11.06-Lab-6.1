@@ -9,9 +9,12 @@ public class AdventureTime {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-
-
+        System.out.println(challengeOne("inputOneTwo.txt"));
+        System.out.println(challengeTwo("inputOneTwo.txt"));
+        System.out.println(challengeThree("inputThreeFour.txt"));
+        System.out.println(challengeFour("inputThreeFour.txt"));
     }
+
 
     /** TODO 1
      *
@@ -22,10 +25,19 @@ public class AdventureTime {
      * @throws IOException
      */
     public static int challengeOne(String fileName) throws IOException {
-        return 0;
-    }
+        int count = 0;
+        int[] numbers = new int[countLinesInFile(fileName)];
+        numbers = readFile(fileName);
+            for(int i = 0; i<numbers.length-1; i++){
+                if(numbers[i] < numbers[i+1]){
+                    count++;
+                }
+            }
+            return count;
+        }
 
-    /** TODO 2
+
+/** TODO 2
      *
      * Challenge 2
      *
@@ -34,7 +46,15 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeTwo(String fileName) throws FileNotFoundException {
-        return 0;
+        int[] numbers = new int[countLinesInFile(fileName)];
+        numbers = readFile(fileName);
+        int count = 0;
+        for(int i = 0; i<numbers.length-3; i++) {
+            if (numbers[i + 1] + numbers[i + 2] + numbers[i + 3] > numbers[i] + numbers[i + 1] + numbers[i + 2]) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /** TODO 3
@@ -46,7 +66,34 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeThree(String fileName) throws FileNotFoundException {
-        return 0;
+        int linesInFile = countLinesInFile(fileName);
+        String[] movements = new String[linesInFile];
+
+        int index = 0;
+        File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+
+        while(scanner.hasNextLine()){
+            movements[index++] = scanner.nextLine();
+        }
+
+        int depth = 0;
+        int horizontalPosition = 0;
+        for (int i=0;i<movements.length;i++){
+            String current = movements[i];
+            String[] currentSplit = current.split(" ");
+            int amount = Integer.parseInt(currentSplit[1]);
+            if(currentSplit[0].equals("forward")){
+                horizontalPosition += amount;
+            }
+            else if(currentSplit[0].equals("down")){
+                depth += amount;
+            }
+            else{
+                depth -= amount;
+            }
+        }
+        return horizontalPosition * depth;
     }
 
     /** TODO 4
@@ -58,8 +105,38 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeFour(String filename) throws FileNotFoundException {
-        return 0;
+        int linesInFile = countLinesInFile(filename);
+        String[] movements = new String[linesInFile];
+
+        int index = 0;
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+
+        while(scanner.hasNextLine()){
+            movements[index++] = scanner.nextLine();
+        }
+
+        int depth = 0;
+        int horizontalPosition = 0;
+        int aim = 0;
+        for (int i=0;i<movements.length;i++){
+            String current = movements[i];
+            String[] currentSplit = current.split(" ");
+            int amount = Integer.parseInt(currentSplit[1]);
+            if(currentSplit[0].equals("forward")){
+                horizontalPosition += amount;
+                depth += aim * amount;
+            }
+            else if(currentSplit[0].equals("down")){
+                aim += amount;
+            }
+            else{
+                aim -= amount;
+            }
+        }
+        return horizontalPosition * depth;
     }
+
 
     /** This method will write the values passed as challengeOne, challengeTwo, challengeThree, and challengeFour to a text file.
      * Do not edit this method.
